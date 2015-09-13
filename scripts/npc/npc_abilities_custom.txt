@@ -1,0 +1,221 @@
+// Dota Heroes File
+"DOTAAbilities"
+{
+	"Version"		"1"
+
+	//=================================================================================================================
+	// Actual Cannibal: Echoing Howl
+	//=================================================================================================================
+	"actual_cannibal_echoing_howl"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"             		"ability_datadriven"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
+		"AbilityTextureName" 			"warchasers_buff"
+		"RequiredLevel"					"-1"
+
+		"AbilityCastPoint"				"0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityChannelTime"			"10"
+
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+	    {
+	        "particle" "particles/units/heroes/hero_pudge/pudge_rot.vpcf"
+	    }
+
+		// Modifiers
+		//-------------------------------------------------------------------------------------------------------------
+		"Modifiers"
+		{
+			"modifier_increasing_vision_radius"
+			{
+				"Passive"			"0"
+				"IsHidden"			"0"
+				"IsDebuff"			"0"
+		
+				"EffectName"		"particles/units/heroes/hero_pudge/pudge_rot.vpcf"
+				"EffectAttachType"	"follow_origin"
+				
+				"ThinkInterval"  	"1"
+
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"actual_cannibal.lua"
+						"Function"		"EchoingHowl_Think"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_FLYING"		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_increasing_vision_radius"
+				"Target" 		"CASTER"
+			}
+		}
+
+		"OnChannelFinish"
+		{
+			"RemoveModifier"
+			{
+				"ModifierName"	"modifier_increasing_vision_radius"
+				"Target" 		"CASTER"
+			}
+			"RunScript"
+			{
+				"ScriptFile"	"actual_cannibal.lua"
+				"Function"		"EchoingHowl_Finish"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Actual Cannibal: Lurking
+	//=================================================================================================================
+	"actual_cannibal_lurking"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"ability_name"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastPoint"				"2.0"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+		"AbilityCooldown"				"8.0"
+
+
+		"Modifiers"
+		{
+			"modifier_spoopy_tree_destruction"
+			{
+				"OnCreated"
+				{
+					"DestroyTrees"
+					{
+						"Target" 		"CASTER"
+						"Radius"		"100"
+					}
+				}
+			}
+		}
+
+
+		"OnAttack"
+		{
+			"RemoveModifier"
+			{
+				"ModifierName"	"modifier_phased"
+				"Target"		"CASTER"
+			}
+			"RemoveModifier"
+			{
+				"ModifierName"	"modifier_invisible"
+				"Target" 		"CASTER"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_spoopy_tree_destruction"
+				"Duration"		"1.0"
+			}
+		}
+
+		"OnAttacked"
+		{
+			"RemoveModifier"
+			{
+				"ModifierName"	"modifier_phased"
+				"Target"		"CASTER"
+			}
+			"RemoveModifier"
+			{
+				"ModifierName"	"modifier_invisible"
+				"Target" 		"CASTER"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_spoopy_tree_destruction"
+				"Duration"		"1.0"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_phased"
+				"Target" 		"CASTER"
+				"Duration"		"5.0"
+			}
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_invisible"
+				"Target" 		"CASTER"
+				"Duration"		"5.0"
+			}
+			"RunScript"
+			{
+				"ScriptFile"	"actual_cannibal.lua"
+				"Function"		"Lurking_Start"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Actual Cannibal: Noxious Musk (Passive)
+	//=================================================================================================================
+	"actual_cannibal_noxious_musk"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"ability_name"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		"Modifiers"
+		{
+			"modifier_musk"
+			{
+				"Passive"			"1"
+				"IsHidden"			"0"
+				"IsDebuff"			"0"
+				
+				"ThinkInterval"  	"3"
+
+				"OnIntervalThink"
+				{
+					"CreateThinker"
+					{
+						"ModifierName"	"modifier_musk_thinker"
+						"Target"		"CASTER"
+					}
+				}
+			}
+
+			"modifier_musk_thinker"
+			{
+				"Duration"	"1"
+		
+				"EffectName"		"particles/units/heroes/hero_pudge/pudge_rot.vpcf"
+				"EffectAttachType"	"follow_origin"
+			}
+		}
+	}
+
+}

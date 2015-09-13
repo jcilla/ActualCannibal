@@ -1,0 +1,24 @@
+// Dota Heroes File
+// NOTE: This is not for creating new heroes, this is for taking a currently existing hero as a template and overriding
+// the specified key-value combinations.  Use override_hero <hero_to_override> for this.
+"DOTAHeroes"
+{
+	//=================================================================================================================
+	// HERO: Actual Cannibal
+	//=================================================================================================================
+	"npc_ac_actual_cannibal"
+	{
+		"override_hero"				"npc_dota_hero_abaddon"			// Hero to override
+		"VisionNighttimeRange"		"1000"							// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Camper
+	//=================================================================================================================
+	"npc_ac_camper"
+	{
+		"override_hero"				"npc_dota_hero_alchemist"		// Hero to override
+		//"Ability1"				"actual_cannibal_echoing_howl"	// Ability 1
+		"VisionNighttimeRange"		"1000"							// Range of vision at night time.
+	}
+}
